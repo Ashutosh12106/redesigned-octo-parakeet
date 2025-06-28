@@ -19,79 +19,82 @@ const sponsors = [
 ---
 
 <Section id="sponsors">
-  <div class="flex-row items-center">
-    <div class="grid grid-cols-3 sm:grid-cols-3 md:grid-cols-6">
-      {
-        sponsors.map((sponsor, index) => {
-          return (
-            <div class={`sponsor-item p-4 grayscale transition duration-200 hover:grayscale-0`} data-index={index}>
-              <Image src={sponsor.logo} class="h-12 w-auto mx-auto" alt={sponsor.alt} loading="lazy" />
-            </div>
-          );
-        })
-      }
+  <div class="overflow-hidden">
+    <div class="sponsors-container">
+      <div class="sponsors-track">
+        {
+          sponsors.map((sponsor) => {
+            return (
+              <div class="sponsor-item p-4 grayscale transition duration-200 hover:grayscale-0">
+                <Image src={sponsor.logo} class="h-12 w-auto mx-auto" alt={sponsor.alt} loading="lazy" />
+              </div>
+            );
+          })
+        }
+        <!-- Duplicate logos for seamless loop -->
+        {
+          sponsors.map((sponsor) => {
+            return (
+              <div class="sponsor-item p-4 grayscale transition duration-200 hover:grayscale-0">
+                <Image src={sponsor.logo} class="h-12 w-auto mx-auto" alt={sponsor.alt} loading="lazy" />
+              </div>
+            );
+          })
+        }
+      </div>
     </div>
   </div> 
 </Section>
 
 <style>
+  .sponsors-container {
+    width: 100%;
+    position: relative;
+  }
+
+  .sponsors-track {
+    display: flex;
+    width: calc(200%);
+    animation: scroll-left 20s linear infinite;
+  }
+
   .sponsor-item {
-    opacity: 0;
-    transform: translateX(-50px);
-    transition: all 0.6s ease-out;
+    flex: 0 0 auto;
+    min-width: calc(100% / 6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
-  .sponsor-item.animate {
-    opacity: 1;
-    transform: translateX(0);
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
   }
 
-  /* Alternate animation direction for visual interest */
-  .sponsor-item[data-index="1"],
-  .sponsor-item[data-index="3"],
-  .sponsor-item[data-index="5"] {
-    transform: translateX(50px);
+  /* Pause animation on hover */
+  .sponsors-container:hover .sponsors-track {
+    animation-play-state: paused;
   }
 
-  .sponsor-item[data-index="1"].animate,
-  .sponsor-item[data-index="3"].animate,
-  .sponsor-item[data-index="5"].animate {
-    transform: translateX(0);
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    .sponsor-item {
+      min-width: calc(100% / 3);
+    }
+    
+    .sponsors-track {
+      animation-duration: 15s;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .sponsors-track {
+      animation-duration: 12s;
+    }
   }
 </style>
-
-<script>
-  function setupSponsorsAnimation() {
-    const sponsorItems = document.querySelectorAll('.sponsor-item');
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const index = parseInt(entry.target.getAttribute('data-index') || '0');
-          
-          // Add staggered delay based on index
-          setTimeout(() => {
-            entry.target.classList.add('animate');
-          }, index * 100);
-          
-          // Stop observing once animated
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
-
-    sponsorItems.forEach((item) => {
-      observer.observe(item);
-    });
-  }
-
-  // Run on page load
-  setupSponsorsAnimation();
-  
-  // Run on page swap for Astro navigation
-  document.addEventListener('astro:after-swap', setupSponsorsAnimation);
-</script>
 </Section>
