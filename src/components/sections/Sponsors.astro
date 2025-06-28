@@ -25,7 +25,7 @@ const sponsors = [
         {
           sponsors.map((sponsor) => {
             return (
-              <div class="sponsor-item p-4 grayscale transition duration-200 hover:grayscale-0">
+              <div class="sponsor-item px-2 py-4 grayscale transition duration-200 hover:grayscale-0">
                 <Image src={sponsor.logo} class="h-12 w-auto mx-auto" alt={sponsor.alt} loading="lazy" />
               </div>
             );
@@ -35,7 +35,7 @@ const sponsors = [
         {
           sponsors.map((sponsor) => {
             return (
-              <div class="sponsor-item p-4 grayscale transition duration-200 hover:grayscale-0">
+              <div class="sponsor-item px-2 py-4 grayscale transition duration-200 hover:grayscale-0">
                 <Image src={sponsor.logo} class="h-12 w-auto mx-auto" alt={sponsor.alt} loading="lazy" />
               </div>
             );
@@ -56,6 +56,7 @@ const sponsors = [
     display: flex;
     width: calc(200%);
     animation: scroll-left 20s linear infinite;
+    gap: 0;
   }
 
   .sponsor-item {
@@ -97,4 +98,3 @@ const sponsors = [
     }
   }
 </style>
-</Section>
